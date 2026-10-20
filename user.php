@@ -6,7 +6,7 @@ echo '<h1>Lab 2C: User and Tutor Classes</h1>';
 
 function cleanText($value)
 {
-    // TODO: Return the value with extra spaces removed.
+    return trim(preg_replace('/\s+/', ' ', $value));
 }
 
 class User
@@ -19,9 +19,9 @@ class User
 
     public function __construct($name, $email)
     {
-        // TODO: Clean and store the name.
-        // TODO: Clean, lowercase, and store the email.
-        // TODO: Assign STATUS_ACTIVE to status.
+        $this->name = cleanText($name);
+        $this->email = strtolower(cleanText($email));
+        $this->status = self::STATUS_ACTIVE;
     }
 }
 
@@ -31,15 +31,19 @@ class Tutor extends User
 
     public function __construct($name, $email, $subject)
     {
-        // TODO: Call the parent constructor.
-        // TODO: Clean and store the subject.
+        parent::__construct($name, $email);
+        $this->subject = cleanText($subject);
     }
 
     public function profileSummary()
     {
-        // TODO: Return the tutor's name, email, and subject.
+        $name = htmlspecialchars($this->name, ENT_QUOTES, 'UTF-8');
+        $email = htmlspecialchars($this->email, ENT_QUOTES, 'UTF-8');
+        $subject = htmlspecialchars($this->subject, ENT_QUOTES, 'UTF-8');
+
+        return "Name: $name<br>Email: $email<br>Subject: $subject";
     }
 }
 
-// TODO: Create a Tutor object using sample data.
-// TODO: Display profileSummary().
+$tutor = new Tutor('  Jamie   Lee  ', '  JAMIE.LEE@EXAMPLE.COM  ', '  Web   Development  ');
+echo '<p>' . $tutor->profileSummary() . '</p>';
